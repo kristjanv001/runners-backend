@@ -72,5 +72,20 @@ public class RunRepository {
     Assert.state(updated == 1, "Failed to delete run " + id);
   }
 
+  public int countRuns() {
+    return this.jdbcClient.sql("select * from run").query().listOfRows().size();
+  }
+
+  public void saveAllRuns(List<Run> runs) {
+    runs.stream().forEach(this::addRun);
+  }
+
+  public List<Run> getByLocation(String location) {
+    return jdbcClient.sql("select * from run where location = :location")
+      .param("location", location)
+      .query(Run.class)
+      .list();
+  }
+
 
 }
