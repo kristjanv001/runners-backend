@@ -41,12 +41,23 @@ public class RunRepository {
       .optional();
   }
 
+//  public void addRun(Run run) {
+//    String sqlQuery = "insert into run(id,title,started_on,completed_on,kilometers,location) values(?,?,?,?,?,?)";
+//
+//    int updatedRun = jdbcClient
+//      .sql(sqlQuery)
+//      .params(List.of(run.id(),run.title(),run.startedOn(),run.completedOn(),run.kilometers(),run.location().toString()))
+//      .update();
+//
+//    Assert.state(updatedRun == 1, "Failed to create run " + run.title());
+//  }
+
   public void addRun(Run run) {
-    String sqlQuery = "insert into run(id,title,started_on,completed_on,kilometers,location) values(?,?,?,?,?,?)";
+    String sqlQuery = "INSERT INTO run (title, started_on, completed_on, kilometers, location) VALUES (?, ?, ?, ?, ?)";
 
     int updatedRun = jdbcClient
       .sql(sqlQuery)
-      .params(List.of(run.id(),run.title(),run.startedOn(),run.completedOn(),run.kilometers(),run.location().toString()))
+      .params(List.of(run.title(), run.startedOn(), run.completedOn(), run.kilometers(), run.location().toString()))
       .update();
 
     Assert.state(updatedRun == 1, "Failed to create run " + run.title());
@@ -80,12 +91,10 @@ public class RunRepository {
     runs.stream().forEach(this::addRun);
   }
 
-  public List<Run> getByLocation(String location) {
+  public List<Run> getAllByLocation(String location) {
     return jdbcClient.sql("select * from run where location = :location")
       .param("location", location)
       .query(Run.class)
       .list();
   }
-
-
 }

@@ -53,4 +53,10 @@ public class RunController {
     this.runRepository.deleteRun(id);
   }
 
+  // LOCATION
+  @GetMapping("/api/runs/location/{location}")
+  List<Run> getByLocation(@PathVariable String location) {
+    return runRepository.getAllByLocation(location);
+  }
+
 }
